@@ -24,38 +24,49 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
      *
      */
     private static final long serialVersionUID = 11L;
-    
+
     public UserObject() throws RemoteException {
         super();
     }
-    
+
     public int createUser(User u) {
         try {
             System.out.println("Invoke save from " + getClientHost());
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        return UserRepository.create(u);
+        return UserRepository.createUser(u);
     }
-    
-    public boolean getUser(String userRFC) {
+
+    public User getUser(String userRFC) {
         try {
             System.out.println("Invoke save from " + getClientHost());
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
         
-        ArrayList al = new ArrayList();
-        
-        al = UserRepository.getUser(userRFC);
-        
-        if (al.isEmpty()) {
-            return false;
-        } else {
-            return true;
+        return UserRepository.getUser(userRFC);
+    }
+
+    public int createCompany(Company c) {
+        try {
+            System.out.println("Invoke save from " + getClientHost());
+        } catch (ServerNotActiveException snae) {
+            snae.printStackTrace();
         }
+        return UserRepository.createCompany(c);
     }
     
+    
+        public int createInvestment(Transaction t) {
+        try {
+            System.out.println("Invoke save from " + getClientHost());
+        } catch (ServerNotActiveException snae) {
+            snae.printStackTrace();
+        }
+        return UserRepository.createInvestment(t);
+    }
+
     public ArrayList getInvestments(String userRFC) {
         ArrayList al = new ArrayList();
         try {
@@ -63,7 +74,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        
+
         al = UserRepository.getInvestments(userRFC);
         return al;
     }

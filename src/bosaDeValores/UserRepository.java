@@ -16,15 +16,15 @@ import java.util.HashSet;
  */
 public class UserRepository {
 
-    public static int create(User u) {
+    public static int createUser(User u) {
         int iRet = -1;
         try {
             Connection con = DBManager.getInstance().getConnection();
-            String SQL = "INSERT INTO users (userRFC, companyRFC, numOfActions, lastBuyPrice) values(?,?,?,?)";
+            String SQL = "INSERT INTO users (userRFC, name, numOfActions, lastBuyPrice) values(?,?,?,?)";
 
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, u.getUserRFC());
-            pstmt.setString(2, u.getCompanyRFC());
+            pstmt.setString(2, u.getName());
             pstmt.setInt(3, u.getNumOfActions());
             pstmt.setDouble(4, u.getLastBuyPrice());
 
@@ -38,69 +38,114 @@ public class UserRepository {
         return iRet;
     }
 
-    public static ArrayList getUser(String userRFC) {
-        int iRet = -1;
-        ArrayList arr = new ArrayList();
+    public static User getUser(String userRFC) {
+        User usr = new User();
+
         try {
             Connection con = DBManager.getInstance().getConnection();
-            //String SQL = "INSERT INTO users (userRFC, companyRFC, numOfActions, lastBuyPrice) values(?,?,?,?)";
-            String SQL = "SELECT * FROM users WHERE userRFC = '" + userRFC + "'";
+            //String SQL = "SELECT userRFC, name FROM users WHERE userRFC = '" + userRFC + "' LIMIT 1";
+            String SQL = "SELECT * FROM users WHERE userRFC = ? LIMIT 1";
 
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            //pstmt.setString(1, userRFC);
-            
+            pstmt.setString(1, userRFC);
+
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                User u = new User();
-                u.setUserRFC(rs.getString("userRFC"));
-                u.setCompanyRFC(rs.getString("companyRFC"));
-                u.setNumOfActions(rs.getInt("numOfActions"));
-                u.setLastBuyPrice(rs.getDouble("lastBuyPrice"));
-                arr.add(u);
+                usr.setUserRFC(rs.getString("userRFC"));
+                usr.setName(rs.getString("name"));
+                usr.setNumOfActions(rs.getInt("numOfActions"));
+                usr.setLastBuyPrice(rs.getDouble("lastBuyPrice"));
             }
-            
-//            pstmt.setString(2, u.getCompanyRFC());
-//            pstmt.setInt(3, u.getNumOfActions());
-//            pstmt.setDouble(4, u.getLastBuyPrice());
 
-            //iRet = pstmt.executeUpdate();
+
+            pstmt.close();
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+        return usr;
+    }
+
+    public static int createCompany(Company c) {
+        int iRet = -1;
+        try {
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "INSERT INTO companies (companyRFC, numOfActions, valueOfAction) values(?,?,?)";
+
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, c.getCompanyRFC());
+            pstmt.setInt(2, c.getNumOfActions());
+            pstmt.setDouble(3, c.getValueOfAction());
+
+            iRet = pstmt.executeUpdate();
 
             pstmt.close();
         } catch (SQLException se) {
             System.out.println(se);
         }
 
-        return arr;
+        return iRet;
     }
+
     
-        public static ArrayList getInvestments(String userRFC) {
+    //NUEVA TRANSACCIÖN
+    public static int createInvestment(Transaction t) {
         int iRet = -1;
-        ArrayList arr = new ArrayList();
         try {
             Connection con = DBManager.getInstance().getConnection();
-            //String SQL = "INSERT INTO users (userRFC, companyRFC, numOfActions, lastBuyPrice) values(?,?,?,?)";
-            String SQL = "SELECT t.companyRFC, date, operatedActions, operatedActionsPrice FROM transactions AS t INNER JOIN companies AS c ON c.companyRFC = t.companyRFC WHERE userRFC='" + userRFC + "'";
-            
-            //SELECT * FROM transactions as t INNER JOIN companies as c ON c.companyRFC = t.companyRFC WHERE userRFC= 'AA12001082'
 
+            //SE ACTUALIZA EL NUMERO DE ACCIONES DISPONIBLES DE LA COMPANÍA
+            String SQL = "UPDATE companies SET numOfActions =  numOfActions - ? WHERE companyRFC = ?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            //pstmt.setString(1, userRFC);
-            
+            pstmt.setInt(1, t.getOperatedActions());
+            pstmt.setString(2, t.getCompanyRFC());
+            iRet = pstmt.executeUpdate();
+
+            if (iRet == 1) {
+                //SE RELIZA LA TRANSACCIÓN SI EXISTEN LAS ACCIONES SUFICIENTES
+                SQL = "INSERT INTO transactions (userRFC, companyRFC, operatedActions, operatedActionsPrice) values(?,?,?,?)";
+                PreparedStatement pstmt2 = con.prepareStatement(SQL);
+                pstmt2.setString(1, t.getUserRFC());
+                pstmt2.setString(2, t.getCompanyRFC());
+                pstmt2.setInt(3, t.getOperatedActions());
+                pstmt2.setDouble(4, t.getOperatedActionsPrice());
+                iRet = pstmt2.executeUpdate();
+                
+                //SE ACTUALIZA EL NUMERO DE ACCIONES Y ULTIMO PRECIO DE COMPRA DEL USUARIO
+                SQL = "UPDATE users SET numOfActions =  numOfActions + ?, lastBuyPrice = ? WHERE userRFC = ?";
+                PreparedStatement pstmt3 = con.prepareStatement(SQL);
+                pstmt3.setInt(1, t.getOperatedActions());
+                pstmt3.setDouble(2, t.getOperatedActionsPrice());
+                pstmt3.setString(3, t.getUserRFC());
+                iRet = pstmt3.executeUpdate();
+            }
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+
+        return iRet;
+    }
+
+    public static ArrayList getInvestments(String userRFC) {
+        //int iRet = -1;
+        ArrayList<Transaction> arr = new ArrayList();
+        try {
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "SELECT t.companyRFC, t.operatedActions, t.operatedActionsPrice, c.valueOfAction FROM transactions as t "
+                    + " INNER JOIN companies as c ON t.companyRFC = c.companyRFC WHERE userRFC = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, userRFC);
+
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                User u = new User();
-                u.setUserRFC(rs.getString("userRFC"));
-                u.setCompanyRFC(rs.getString("companyRFC"));
-                u.setNumOfActions(rs.getInt("numOfActions"));
-                u.setLastBuyPrice(rs.getDouble("lastBuyPrice"));
-                arr.add(u);
+                Transaction tr = new Transaction();
+                tr.setUserRFC(userRFC);
+                tr.setCompanyRFC(rs.getString("companyRFC"));
+                tr.setOperatedActions(rs.getInt("operatedActions"));
+                tr.setOperatedActionsPrice(rs.getDouble("operatedActionsPrice"));
+                tr.setActualActionsPrice(rs.getDouble("valueOfAction"));
+                arr.add(tr);
             }
-            
-//            pstmt.setString(2, u.getCompanyRFC());
-//            pstmt.setInt(3, u.getNumOfActions());
-//            pstmt.setDouble(4, u.getLastBuyPrice());
-
-            //iRet = pstmt.executeUpdate();
 
             pstmt.close();
         } catch (SQLException se) {
@@ -134,5 +179,4 @@ public class UserRepository {
 //        }
 //        return arr;
 //    }
-
 }

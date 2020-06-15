@@ -6,26 +6,27 @@
 package bosaDeValores;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
  * @author Edwin Fajardo
  */
 public class User implements Serializable {
-    
-    private String userRFC = "";
-    private String companyRFC = "";    
+
+    private String userRFC = null;
+    private String name = null;
     private int numOfActions = 0;
     private Double lastBuyPrice = 0.0;
-    
-    public User () {
-    
+
+    public User() {
+
     }
-    
-    
-    public User (String userRFC, String companyRFC) {
+
+    public User(String userRFC, String name) {
         this.userRFC = userRFC;
-        this.companyRFC = companyRFC;
+        this.name = name;
     }
 
     public String getUserRFC() {
@@ -36,12 +37,12 @@ public class User implements Serializable {
         this.userRFC = userRFC;
     }
 
-    public String getCompanyRFC() {
-        return companyRFC;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyRFC(String companyRFC) {
-        this.companyRFC = companyRFC;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNumOfActions() {
@@ -59,5 +60,5 @@ public class User implements Serializable {
     public void setLastBuyPrice(Double lastBuyPrice) {
         this.lastBuyPrice = lastBuyPrice;
     }
-    
+
 }

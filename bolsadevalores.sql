@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-05-2020 a las 22:43:25
+-- Tiempo de generación: 15-06-2020 a las 21:04:11
 -- Versión del servidor: 5.7.24
--- Versión de PHP: 7.2.19
+-- Versión de PHP: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `companies` (
   `companyRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `numOfActions` int(11) NOT NULL,
-  `valueOfAction` double NOT NULL
+  `numOfActions` int(11) UNSIGNED NOT NULL,
+  `valueOfAction` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -52,18 +52,10 @@ INSERT INTO `companies` (`companyRFC`, `numOfActions`, `valueOfAction`) VALUES
 CREATE TABLE `transactions` (
   `userRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `companyRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `operatedActions` int(11) NOT NULL,
-  `operatedActionsPrice` double NOT NULL
+  `operatedActionsPrice` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `transactions`
---
-
-INSERT INTO `transactions` (`userRFC`, `companyRFC`, `date`, `operatedActions`, `operatedActionsPrice`) VALUES
-('AA12001082', 'AA10000000', '2020-05-28 22:06:19', 30, 50),
-('AA12001082', 'AA10000000', '2020-05-13 22:06:19', -15, 30);
 
 -- --------------------------------------------------------
 
@@ -73,18 +65,17 @@ INSERT INTO `transactions` (`userRFC`, `companyRFC`, `date`, `operatedActions`, 
 
 CREATE TABLE `users` (
   `userRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `companyRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `numOfActions` int(11) NOT NULL,
-  `lastBuyPrice` double NOT NULL
+  `name` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
+  `numOfActions` int(11) UNSIGNED NOT NULL,
+  `lastBuyPrice` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`userRFC`, `companyRFC`, `numOfActions`, `lastBuyPrice`) VALUES
-('AA12001082', 'AA10000000', 0, 0),
-('AA12001083', 'AA10000000', 0, 0);
+INSERT INTO `users` (`userRFC`, `name`, `numOfActions`, `lastBuyPrice`) VALUES
+('AA12001082', 'Edwin Fajardo', 0, 0);
 
 --
 -- Índices para tablas volcadas
@@ -100,15 +91,14 @@ ALTER TABLE `companies`
 -- Indices de la tabla `transactions`
 --
 ALTER TABLE `transactions`
-  ADD KEY `userRFC` (`userRFC`),
-  ADD KEY `companyRFC` (`companyRFC`);
+  ADD KEY `transactions_ibfk_2` (`companyRFC`),
+  ADD KEY `transactions_ibfk_1` (`userRFC`);
 
 --
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD UNIQUE KEY `userRFC` (`userRFC`),
-  ADD KEY `companyRFC` (`companyRFC`);
+  ADD UNIQUE KEY `userRFC` (`userRFC`);
 
 --
 -- Restricciones para tablas volcadas
@@ -118,8 +108,8 @@ ALTER TABLE `users`
 -- Filtros para la tabla `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userRFC`) REFERENCES `users` (`userRFC`),
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`companyRFC`) REFERENCES `companies` (`companyRFC`);
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userRFC`) REFERENCES `users` (`userRFC`) ON DELETE CASCADE,
+  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`companyRFC`) REFERENCES `companies` (`companyRFC`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
