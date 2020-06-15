@@ -5,6 +5,7 @@
  */
 package bosaDeValores;
 
+import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,10 +13,14 @@ import java.awt.event.ActionListener;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,53 +32,55 @@ public class UserClient {
 
     public static void main(String[] args) {
 
-        //CREACION DEL JFRAME
-        JFrame frame = new JFrame(gc);
-        frame.setTitle("Inicio de sesión");
-        frame.setSize(600, 400);
-        frame.setLocation(500, 350);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JButton btn = new JButton("Iniciar sesion");
-//        JButton newUser = new JButton("Crear usuario");
-        JLabel lbl = new JLabel("Ingrese su RFC de cliente");
-        JTextField tf = new JTextField("", 10);
-//        frame.add(newUser);
-        frame.add(lbl);
-        frame.add(tf);
-        frame.add(btn);
-        GridLayout gl = new GridLayout(3, 1);
-        gl.setHgap(100);
-        frame.setLayout(gl);
-        frame.setVisible(true);
+        //SE INICIALIZA LA VISTA
+        View vs = new View();
+        vs.setVisible(true);
+        JTextField tf = vs.getRfcUsuario();
+        //> SOLO PARA PRUEBAS
+        tf.setText("AA12001082");
+        //>
+        JButton btn = vs.getIniciarSesion();
+        JLabel lbl = vs.getStatus();
 
+        //Inicialización de vista de inversiones
+        ListaDeActiones la = new ListaDeActiones();
+        JTable jt = la.getInvestments();
+        DefaultTableModel model = new DefaultTableModel();
+
+        //ACtion listener de la primera vista
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //lbl.setText("Name has been submitted.");
                 try {
-
                     String username = tf.getText();
                     Registry registry = LocateRegistry.getRegistry("127.0.0.1");
                     IRemoteUser re = (IRemoteUser) registry.lookup("User");
 
                     //SE BUSCA EL USUARIO Y SE REGRESA SU INFORMACIÓN
                     User usr = re.getUser(username);
-                    //System.out.println("Usuario: " + rfc);
-                    System.out.println("===");
-
-                    if ( !(usr.getUserRFC() == null) ) {
+                    if (!(usr.getUserRFC() == null)) {
                         lbl.setText("BIENVENIDO!");
 
 //                    LISTA TODAS LAS TRANSACCIONES HECHAS POR DETERMINADO USUARIO (userRFC)
                         ArrayList<Transaction> arr = re.getInvestments(usr.getUserRFC());
 
+                        String headers[] = {"Empresa", "Numero de acciones", "Ultimo precio de compra", "Precio actual"};
+                        model.setColumnIdentifiers(headers);
+                        la.setTitle("Bienvenido " + username);
+
                         arr.forEach((n) -> {
-                            System.out.println("Empresa: " + n.getCompanyRFC());
-                            System.out.println("Numero de totales: " + n.getOperatedActions());
-                            System.out.println("Ultimo de compra: " + n.getOperatedActionsPrice());
-                            System.out.println("Precio actual: " + n.getActualActionsPrice());
-                            System.out.println("========");
+                            String rfc = n.getCompanyRFC();
+                            int actions = n.getOperatedActions();
+                            Double price = n.getOperatedActionsPrice();
+                            Double aPrice = n.getActualActionsPrice();
+                            Object[] data = {rfc, actions, price, aPrice};
+                            model.addRow(data);
                         });
+
+                        //PANEL
+                        jt.setModel(model);
+                        vs.setVisible(false);
+                        la.setVisible(true);
 
                     } else {
                         lbl.setText("NO EXISTES CRACK");
