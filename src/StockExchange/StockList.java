@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bosaDeValores;
+package StockExchange;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -12,12 +12,12 @@ import javax.swing.JTable;
  *
  * @author Edwin Fajardo
  */
-public class ListaDeActiones extends javax.swing.JFrame {
+public class StockList extends javax.swing.JFrame {
 
     /**
      * Creates new form ListaDeActiones
      */
-    public ListaDeActiones() {
+    public StockList() {
         initComponents();
     }
 
@@ -25,7 +25,7 @@ public class ListaDeActiones extends javax.swing.JFrame {
         return investments;
     }
 
-    public JButton getTransactActions() {
+    public JButton getTransactions() {
         return transactActions;
     }
     
@@ -117,20 +117,21 @@ public class ListaDeActiones extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListaDeActiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StockList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListaDeActiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StockList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListaDeActiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StockList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListaDeActiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StockList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListaDeActiones().setVisible(true);
+                new StockList().setVisible(true);
             }
         });
     }

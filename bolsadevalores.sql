@@ -30,15 +30,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `companies` (
   `companyRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `numOfActions` int(11) UNSIGNED NOT NULL,
-  `valueOfAction` double UNSIGNED NOT NULL
+  `stockNumber` int(11) UNSIGNED NOT NULL,
+  `stockValue` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `companies`
 --
 
-INSERT INTO `companies` (`companyRFC`, `numOfActions`, `valueOfAction`) VALUES
+INSERT INTO `companies` (`companyRFC`, `stockNumber`, `stockValue`) VALUES
 ('AA10000000', 100, 200),
 ('AA20000000', 100, 200),
 ('AA30000000', 100, 200);
@@ -53,8 +53,8 @@ CREATE TABLE `transactions` (
   `userRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `companyRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `operatedActions` int(11) NOT NULL,
-  `operatedActionsPrice` double UNSIGNED NOT NULL
+  `operatedStocks` int(11) NOT NULL,
+  `operatedStocksPrice` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -66,7 +66,7 @@ CREATE TABLE `transactions` (
 CREATE TABLE `users` (
   `userRFC` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `numOfActions` int(11) UNSIGNED NOT NULL,
+  `stockNumber` int(11) UNSIGNED NOT NULL,
   `lastBuyPrice` double UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -74,7 +74,7 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`userRFC`, `name`, `numOfActions`, `lastBuyPrice`) VALUES
+INSERT INTO `users` (`userRFC`, `name`, `stockNumber`, `lastBuyPrice`) VALUES
 ('AA12001082', 'Edwin Fajardo', 0, 0);
 
 --

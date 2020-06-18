@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bosaDeValores;
+package StockExchange;
 
 import java.io.Serializable;
 
@@ -14,13 +14,13 @@ import java.io.Serializable;
 public class Company implements Serializable{
     
     private String companyRFC = "";
-    private int numOfActions = 0;
-    private Double valueOfAction = 0.0;
+    private int stockNumber = 0;
+    private Double stockValue = 0.0;
 
-    public Company(String companyRFC, int numOfActions, Double valueOfAction) {
+    public Company(String companyRFC, int stockNumber, Double stockValue) {
         this.companyRFC = companyRFC;
-        this.numOfActions = numOfActions;
-        this.valueOfAction = valueOfAction;
+        this.stockNumber = stockNumber;
+        this.stockValue = stockValue;
     }
     
     public Company() {}
@@ -33,20 +33,20 @@ public class Company implements Serializable{
         this.companyRFC = companyRFC;
     }
 
-    public int getNumOfActions() {
-        return numOfActions;
+    public int getStockNumber() {
+        return stockNumber;
     }
 
-    public void setNumOfActions(int numOfActions) {
-        this.numOfActions = numOfActions;
+    public void setStockNumber(int stockNumber) {
+        this.stockNumber = stockNumber;
     }
 
-    public Double getValueOfAction() {
-        return valueOfAction;
+    public Double getStockValue() {
+        return stockValue;
     }
 
-    public void setValueOfAction(Double valueOfAction) {
-        this.valueOfAction = valueOfAction;
+    public void setStockValue(Double stockValue) {
+        this.stockValue = stockValue;
     }
     
     

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
 // * and open the template in the editor.
  */
-package bosaDeValores;
+package StockExchange;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class UserRepository {
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, u.getUserRFC());
             pstmt.setString(2, u.getName());
-            pstmt.setInt(3, u.getNumOfActions());
+            pstmt.setInt(3, u.getStockNumber());
             pstmt.setDouble(4, u.getLastBuyPrice());
 
             iRet = pstmt.executeUpdate();
@@ -53,7 +53,7 @@ public class UserRepository {
             while (rs.next()) {
                 usr.setUserRFC(rs.getString("userRFC"));
                 usr.setName(rs.getString("name"));
-                usr.setNumOfActions(rs.getInt("numOfActions"));
+                usr.setStockNumber(rs.getInt("stockNumber"));
                 usr.setLastBuyPrice(rs.getDouble("lastBuyPrice"));
             }
 
@@ -68,12 +68,12 @@ public class UserRepository {
         int iRet = -1;
         try {
             Connection con = DBManager.getInstance().getConnection();
-            String SQL = "INSERT INTO companies (companyRFC, numOfActions, valueOfAction) values(?,?,?)";
+            String SQL = "INSERT INTO companies (companyRFC, stockNumber, stockValue) values(?,?,?)";
 
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, c.getCompanyRFC());
-            pstmt.setInt(2, c.getNumOfActions());
-            pstmt.setDouble(3, c.getValueOfAction());
+            pstmt.setInt(2, c.getStockNumber());
+            pstmt.setDouble(3, c.getStockValue());
 
             iRet = pstmt.executeUpdate();
 
@@ -95,8 +95,8 @@ public class UserRepository {
             while (rs.next()) {
                 Company c = new Company();
                 c.setCompanyRFC( rs.getString("companyRFC") );
-                c.setNumOfActions( rs.getInt("numOfActions") );
-                c.setValueOfAction( rs.getDouble("valueOfAction") );
+                c.setStockNumber( rs.getInt("stockNumber") );
+                c.setStockValue( rs.getDouble("stockValue") );
                 cList.add(c);
             }
 
@@ -113,27 +113,27 @@ public class UserRepository {
             Connection con = DBManager.getInstance().getConnection();
 
             //SE ACTUALIZA EL NUMERO DE ACCIONES DISPONIBLES DE LA COMPANÍA
-            String SQL = "UPDATE companies SET numOfActions =  numOfActions - ? WHERE companyRFC = ?";
+            String SQL = "UPDATE companies SET stockNumber =  stockNumber - ? WHERE companyRFC = ?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, t.getOperatedActions());
+            pstmt.setInt(1, t.getOperatedStocks());
             pstmt.setString(2, t.getCompanyRFC());
             iRet = pstmt.executeUpdate();
 
             if (iRet == 1) {
                 //SE RELIZA LA TRANSACCIÓN SI EXISTEN LAS ACCIONES SUFICIENTES
-                SQL = "INSERT INTO transactions (userRFC, companyRFC, operatedActions, operatedActionsPrice) values(?,?,?,?)";
+                SQL = "INSERT INTO transactions (userRFC, companyRFC, operatedStocks, operatedStocksPrice) values(?,?,?,?)";
                 PreparedStatement pstmt2 = con.prepareStatement(SQL);
                 pstmt2.setString(1, t.getUserRFC());
                 pstmt2.setString(2, t.getCompanyRFC());
-                pstmt2.setInt(3, t.getOperatedActions());
-                pstmt2.setDouble(4, t.getOperatedActionsPrice());
+                pstmt2.setInt(3, t.getOperatedStocks());
+                pstmt2.setDouble(4, t.getOperatedStocksPrice());
                 iRet = pstmt2.executeUpdate();
 
                 //SE ACTUALIZA EL NUMERO DE ACCIONES Y ULTIMO PRECIO DE COMPRA DEL USUARIO
-                SQL = "UPDATE users SET numOfActions =  numOfActions + ?, lastBuyPrice = ? WHERE userRFC = ?";
+                SQL = "UPDATE users SET stockNumber =  stockNumber + ?, lastBuyPrice = ? WHERE userRFC = ?";
                 PreparedStatement pstmt3 = con.prepareStatement(SQL);
-                pstmt3.setInt(1, t.getOperatedActions());
-                pstmt3.setDouble(2, t.getOperatedActionsPrice());
+                pstmt3.setInt(1, t.getOperatedStocks());
+                pstmt3.setDouble(2, t.getOperatedStocksPrice());
                 pstmt3.setString(3, t.getUserRFC());
                 iRet = pstmt3.executeUpdate();
             }
@@ -150,7 +150,7 @@ public class UserRepository {
         ArrayList<Transaction> arr = new ArrayList();
         try {
             Connection con = DBManager.getInstance().getConnection();
-            String SQL = "SELECT t.companyRFC, t.operatedActions, t.operatedActionsPrice, c.valueOfAction FROM transactions as t "
+            String SQL = "SELECT t.companyRFC, t.operatedStocks, t.operatedStocksPrice, c.stockValue FROM transactions as t "
                     + " INNER JOIN companies as c ON t.companyRFC = c.companyRFC WHERE userRFC = ?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, userRFC);
@@ -160,9 +160,9 @@ public class UserRepository {
                 Transaction tr = new Transaction();
                 tr.setUserRFC(userRFC);
                 tr.setCompanyRFC(rs.getString("companyRFC"));
-                tr.setOperatedActions(rs.getInt("operatedActions"));
-                tr.setOperatedActionsPrice(rs.getDouble("operatedActionsPrice"));
-                tr.setActualActionsPrice(rs.getDouble("valueOfAction"));
+                tr.setOperatedStocks(rs.getInt("operatedStocks"));
+                tr.setOperatedStocksPrice(rs.getDouble("operatedStocksPrice"));
+                tr.setActualStocksPrice(rs.getDouble("stockValue"));
                 arr.add(tr);
             }
 
