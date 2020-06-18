@@ -18,14 +18,14 @@ import java.util.ArrayList;
  *
  * @author Edwin Fajardo
  */
-public class UserObject extends UnicastRemoteObject implements IRemoteUser {
+public class RemoteObject extends UnicastRemoteObject implements IRemoteController {
 
     /**
      *
      */
     private static final long serialVersionUID = 11L;
 
-    public UserObject() throws RemoteException {
+    public RemoteObject() throws RemoteException {
         super();
     }
 
@@ -35,7 +35,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        return UserRepository.createUser(u);
+        return Repository.createUser(u);
     }
 
     public User getUser(String userRFC) {
@@ -45,7 +45,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
             snae.printStackTrace();
         }
 
-        return UserRepository.getUser(userRFC);
+        return Repository.getUser(userRFC);
     }
 
     public int createCompany(Company c) {
@@ -54,7 +54,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        return UserRepository.createCompany(c);
+        return Repository.createCompany(c);
     }
 
     public ArrayList<Company> getAllCompanies() {
@@ -64,7 +64,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
             snae.printStackTrace();
         }
         
-        ArrayList<Company> arr = UserRepository.getAllCompanies();
+        ArrayList<Company> arr = Repository.getAllCompanies();
         
         return arr;
     }
@@ -75,7 +75,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        return UserRepository.createInvestment(t);
+        return Repository.createInvestment(t);
     }
 
     public ArrayList getInvestments(String userRFC) {
@@ -87,7 +87,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         }
 
         //ALGORITMO PARA CREAR UN ELEMENTO POR EMPRESA
-        ArrayList<Transaction> arr = UserRepository.getInvestments(userRFC);
+        ArrayList<Transaction> arr = Repository.getInvestments(userRFC);
 
         return arr;
     }

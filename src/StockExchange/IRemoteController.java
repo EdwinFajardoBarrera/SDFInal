@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Edwin Fajardo
  */
-interface IRemoteUser extends Remote {
+interface IRemoteController extends Remote {
   public int createUser(User u) throws RemoteException;
   public User getUser(String userRFC) throws RemoteException;
   public int createCompany(Company c) throws RemoteException;

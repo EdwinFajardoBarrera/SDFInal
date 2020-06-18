@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Edwin Fajardo
  */
-public class UserClient {
+public class Client {
 
     static GraphicsConfiguration gc;
     static String username;
@@ -35,10 +35,10 @@ public class UserClient {
     public static void main(String[] args) throws RemoteException, NotBoundException {
 
         Registry registry = LocateRegistry.getRegistry("127.0.0.1");
-        IRemoteUser re = (IRemoteUser) registry.lookup("User");
+        IRemoteController re = (IRemoteController) registry.lookup("User");
 
         //SE INICIALIZA LA VISTA LOGIN
-        View vs = new View();
+        VLogin vs = new VLogin();
         vs.setLocation(250, 100);
         vs.setVisible(true);
         JTextField tf = vs.getRfcUsuario();
@@ -49,14 +49,16 @@ public class UserClient {
         //>
 
         //Inicialización de vista de inversiones
-        StockList la = new StockList();
+        VStockList la = new VStockList();
         JTable jt = la.getInvestments();
         DefaultTableModel model = new DefaultTableModel();
         JButton btn2 = la.getTransactions();
         la.setLocation(250, 100);
 
         //INICIALIZACIÓN DE LA VISTA DE TRANSACCIONES
-        Transactions ta = new Transactions();
+        VTransactions ta = new VTransactions();
+        ta.setDefaultCloseOperation(ta.HIDE_ON_CLOSE);
+
         ta.setLocation(250, 100);
 
         //SE OBTIENEN LOS ELEMENTOS
@@ -166,7 +168,6 @@ public class UserClient {
 //                    arr.forEach((k) -> {
 //                        System.out.println("Comp: " + k.getCompanyRFC());;
 //                    });
-
                     arr.forEach((n) -> {
                         String rfc = n.getCompanyRFC();
                         int actions = n.getStockNumber();
@@ -181,8 +182,9 @@ public class UserClient {
                     compsList.setModel(new DefaultComboBoxModel<String>(ls.toArray(new String[0])));
 
                 } catch (RemoteException ex) {
-                    Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
@@ -195,10 +197,10 @@ public class UserClient {
                     int acts = Integer.parseInt(numOfActions.getText());
                     Double price = Double.parseDouble(actionsPrice.getText());
                     Transaction tr = new Transaction(username, company, acts, price);
-                    
+
                     //System.out.println("Transaction: " + tr.getCompanyRFC() + " " + tr.getUserRFC() + " " + tr.getOperatedStocks() + " " + tr.getOperatedStocksPrice());
                     int res = re.createInvestment(tr);
-                    
+
                     if (res == 1) {
                         System.out.println("EXITO EN LA TRANSACCIÓN");
                     } else {
@@ -209,7 +211,7 @@ public class UserClient {
                     //PANEL
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 } catch (RemoteException ex) {
-                    Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

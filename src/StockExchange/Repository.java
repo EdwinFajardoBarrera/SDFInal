@@ -14,7 +14,7 @@ import java.util.HashSet;
  *
  * @author Edwin Fajardo
  */
-public class UserRepository {
+public class Repository {
 
     public static int createUser(User u) {
         int iRet = -1;
