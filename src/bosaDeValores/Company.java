@@ -22,6 +22,8 @@ public class Company implements Serializable{
         this.numOfActions = numOfActions;
         this.valueOfAction = valueOfAction;
     }
+    
+    public Company() {}
 
     public String getCompanyRFC() {
         return companyRFC;

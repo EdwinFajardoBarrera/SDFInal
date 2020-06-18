@@ -5,18 +5,19 @@
  */
 package bosaDeValores;
 
-import java.awt.Component;
 import java.awt.GraphicsConfiguration;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -29,44 +30,88 @@ import javax.swing.table.DefaultTableModel;
 public class UserClient {
 
     static GraphicsConfiguration gc;
+    static String username;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException, NotBoundException {
 
-        //SE INICIALIZA LA VISTA
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
+        IRemoteUser re = (IRemoteUser) registry.lookup("User");
+
+        //SE INICIALIZA LA VISTA LOGIN
         View vs = new View();
+        vs.setLocation(250, 100);
         vs.setVisible(true);
         JTextField tf = vs.getRfcUsuario();
+        JButton btn = vs.getIniciarSesion();
+        JLabel lbl = vs.getStatus();
         //> SOLO PARA PRUEBAS
         tf.setText("AA12001082");
         //>
-        JButton btn = vs.getIniciarSesion();
-        JLabel lbl = vs.getStatus();
 
         //Inicialización de vista de inversiones
         ListaDeActiones la = new ListaDeActiones();
         JTable jt = la.getInvestments();
         DefaultTableModel model = new DefaultTableModel();
+        JButton btn2 = la.getTransactActions();
+        la.setLocation(250, 100);
+
+        //INICIALIZACIÓN DE LA VISTA DE TRANSACCIONES
+        TransactActions ta = new TransactActions();
+        ta.setLocation(250, 100);
+
+        //SE OBTIENEN LOS ELEMENTOS
+        JTable compsInfo = ta.getCompaniesTable();
+        JComboBox compsList = ta.getCompaniesList();
+        JTextField numOfActions = ta.getNumOfActions();
+        JTextField actionsPrice = ta.getActionsPrice();
+        JButton transact = ta.getTransact();
+        DefaultTableModel model2 = new DefaultTableModel();
 
         //ACtion listener de la primera vista
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String username = tf.getText();
-                    Registry registry = LocateRegistry.getRegistry("127.0.0.1");
-                    IRemoteUser re = (IRemoteUser) registry.lookup("User");
+                    username = tf.getText();
 
                     //SE BUSCA EL USUARIO Y SE REGRESA SU INFORMACIÓN
                     User usr = re.getUser(username);
                     if (!(usr.getUserRFC() == null)) {
                         lbl.setText("BIENVENIDO!");
+                        la.setTitle("Bienvenido " + username);
 
 //                    LISTA TODAS LAS TRANSACCIONES HECHAS POR DETERMINADO USUARIO (userRFC)
                         ArrayList<Transaction> arr = re.getInvestments(usr.getUserRFC());
-
+                        //ALGORITMO PARA CREAR UN ELEMENTO POR EMPRESA
+//                      ArrayList<Transaction> arr2 = new ArrayList();
+//                        arr.forEach((el) -> {
+//                            Transaction tr = el;
+//                            String comp1 = el.getCompanyRFC();
+//                            int ops = el.getOperatedActions();
+//                            Double opsPrice = el.getOperatedActionsPrice();
+//
+//                            if (arr2.isEmpty()) {
+//                                arr2.add(tr);
+//                            } else {
+//                                //Se busca en cada elemento de la nueva lista si la empresa ya está listada
+//                                arr2.forEach((el2) -> {
+//                                    String comp2 = el2.getCompanyRFC();
+//                                    int ops2 = el2.getOperatedActions();
+//                                    Double opsPrice2 = el2.getOperatedActionsPrice();
+//                                    //Si la empresa ya está agregada a la lista, se suma el número de aciones operadas
+//                                    if (comp2.equals(comp1)) {
+//                                        el2.setOperatedActions(ops + ops2);
+//                                        el2.setOperatedActionsPrice((opsPrice + opsPrice2) / 2);
+//                                    } else if (el2 == arr2.get(arr2.size() - 1)) {
+//                                        //Si es el último elemento 
+//                                        arr2.add(tr);
+//                                    }
+//                                });
+//                            }
+//                        });
+//                        
                         String headers[] = {"Empresa", "Numero de acciones", "Ultimo precio de compra", "Precio actual"};
                         model.setColumnIdentifiers(headers);
-                        la.setTitle("Bienvenido " + username);
 
                         arr.forEach((n) -> {
                             String rfc = n.getCompanyRFC();
@@ -97,8 +142,74 @@ public class UserClient {
 //                    CREAR NUEVA TRANSACCIÓN (RFCUsuario, RFCEmpresaa, Acciones [+ es compra, - es venta], precioSugerido)
 //                    Transaction tr = new Transaction("AA12001082", "AA10000000", 10, 20.5);
 //                    int resp = re.createInvestment(tr);
+//
                 } catch (Exception ex) {
                     System.out.println(ex);
+                }
+            }
+        });
+
+        btn2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ta.setVisible(true);
+
+                ArrayList<Company> arr;
+                ArrayList<String> ls = new ArrayList<String>();
+
+                try {
+                    //INFORMACIÖN DE EMPRESAS
+                    String headers[] = {"Empresa", "Numero de acciones", "Valor de acciones"};
+                    model2.setColumnIdentifiers(headers);
+                    arr = re.getAllCompanies();
+
+//                    arr.forEach((k) -> {
+//                        System.out.println("Comp: " + k.getCompanyRFC());;
+//                    });
+
+                    arr.forEach((n) -> {
+                        String rfc = n.getCompanyRFC();
+                        int actions = n.getNumOfActions();
+                        Double price = n.getValueOfAction();
+                        Object[] data = {rfc, actions, price};
+                        model2.addRow(data);
+                        ls.add(rfc);
+                    });
+                    compsInfo.setModel(model2);
+
+                    //LISTA DE EMPRESAS
+                    compsList.setModel(new DefaultComboBoxModel<String>(ls.toArray(new String[0])));
+
+                } catch (RemoteException ex) {
+                    Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+
+        transact.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String company = (String) compsList.getSelectedItem();
+                    int acts = Integer.parseInt(numOfActions.getText());
+                    Double price = Double.parseDouble(actionsPrice.getText());
+                    Transaction tr = new Transaction(username, company, acts, price);
+                    
+                    //System.out.println("Transaction: " + tr.getCompanyRFC() + " " + tr.getUserRFC() + " " + tr.getOperatedActions() + " " + tr.getOperatedActionsPrice());
+                    int res = re.createInvestment(tr);
+                    
+                    if (res == 1) {
+                        System.out.println("EXITO EN LA TRANSACCIÓN");
+                    } else {
+                        System.out.println("ALGO FALLO EN LA TRANSACCIÓN");
+                    }
+
+                    //SE CEREA UNA NUEVA TRANSACTION
+                    //PANEL
+                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                } catch (RemoteException ex) {
+                    Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

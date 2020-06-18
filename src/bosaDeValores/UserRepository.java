@@ -57,7 +57,6 @@ public class UserRepository {
                 usr.setLastBuyPrice(rs.getDouble("lastBuyPrice"));
             }
 
-
             pstmt.close();
         } catch (SQLException se) {
             System.out.println(se);
@@ -86,8 +85,28 @@ public class UserRepository {
         return iRet;
     }
 
-    
-    //NUEVA TRANSACCIÖN
+    public static ArrayList<Company> getAllCompanies() {
+        ArrayList<Company> cList = new ArrayList();
+        try {
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "SELECT * FROM companies";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Company c = new Company();
+                c.setCompanyRFC( rs.getString("companyRFC") );
+                c.setNumOfActions( rs.getInt("numOfActions") );
+                c.setValueOfAction( rs.getDouble("valueOfAction") );
+                cList.add(c);
+            }
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+        return cList;
+    }
+
+//NUEVA TRANSACCIÖN
     public static int createInvestment(Transaction t) {
         int iRet = -1;
         try {
@@ -109,7 +128,7 @@ public class UserRepository {
                 pstmt2.setInt(3, t.getOperatedActions());
                 pstmt2.setDouble(4, t.getOperatedActionsPrice());
                 iRet = pstmt2.executeUpdate();
-                
+
                 //SE ACTUALIZA EL NUMERO DE ACCIONES Y ULTIMO PRECIO DE COMPRA DEL USUARIO
                 SQL = "UPDATE users SET numOfActions =  numOfActions + ?, lastBuyPrice = ? WHERE userRFC = ?";
                 PreparedStatement pstmt3 = con.prepareStatement(SQL);

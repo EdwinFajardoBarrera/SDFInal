@@ -44,7 +44,7 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
-        
+
         return UserRepository.getUser(userRFC);
     }
 
@@ -56,9 +56,20 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
         }
         return UserRepository.createCompany(c);
     }
-    
-    
-        public int createInvestment(Transaction t) {
+
+    public ArrayList<Company> getAllCompanies() {
+        try {
+            System.out.println("Invoke save from " + getClientHost());
+        } catch (ServerNotActiveException snae) {
+            snae.printStackTrace();
+        }
+        
+        ArrayList<Company> arr = UserRepository.getAllCompanies();
+        
+        return arr;
+    }
+
+    public int createInvestment(Transaction t) {
         try {
             System.out.println("Invoke save from " + getClientHost());
         } catch (ServerNotActiveException snae) {
@@ -68,15 +79,17 @@ public class UserObject extends UnicastRemoteObject implements IRemoteUser {
     }
 
     public ArrayList getInvestments(String userRFC) {
-        ArrayList al = new ArrayList();
+
         try {
             System.out.println("Invoke save from " + getClientHost());
         } catch (ServerNotActiveException snae) {
             snae.printStackTrace();
         }
 
-        al = UserRepository.getInvestments(userRFC);
-        return al;
+        //ALGORITMO PARA CREAR UN ELEMENTO POR EMPRESA
+        ArrayList<Transaction> arr = UserRepository.getInvestments(userRFC);
+
+        return arr;
     }
 
 //  public int save(Province p) {

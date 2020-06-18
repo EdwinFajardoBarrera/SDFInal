@@ -5,6 +5,7 @@
  */
 package bosaDeValores;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 
 /**
@@ -23,6 +24,12 @@ public class ListaDeActiones extends javax.swing.JFrame {
     public JTable getInvestments() {
         return investments;
     }
+
+    public JButton getTransactActions() {
+        return transactActions;
+    }
+    
+    
     
     
 
@@ -37,7 +44,7 @@ public class ListaDeActiones extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         investments = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        transactActions = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,10 +62,10 @@ public class ListaDeActiones extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(investments);
 
-        jButton1.setText("Comprar/vender Acciones");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        transactActions.setText("Comprar/vender Acciones");
+        transactActions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                transactActionsActionPerformed(evt);
             }
         });
 
@@ -72,7 +79,7 @@ public class ListaDeActiones extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(323, 323, 323)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(transactActions, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 362, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -82,16 +89,16 @@ public class ListaDeActiones extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                .addComponent(transactActions, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void transactActionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactActionsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_transactActionsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,7 +137,7 @@ public class ListaDeActiones extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable investments;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton transactActions;
     // End of variables declaration//GEN-END:variables
 }
