@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bosaDeValores;
+package StockExchange;
 
 import java.awt.GraphicsConfiguration;
 import java.awt.event.ActionEvent;
@@ -49,21 +49,21 @@ public class UserClient {
         //>
 
         //Inicialización de vista de inversiones
-        ListaDeActiones la = new ListaDeActiones();
+        StockList la = new StockList();
         JTable jt = la.getInvestments();
         DefaultTableModel model = new DefaultTableModel();
-        JButton btn2 = la.getTransactActions();
+        JButton btn2 = la.getTransactions();
         la.setLocation(250, 100);
 
         //INICIALIZACIÓN DE LA VISTA DE TRANSACCIONES
-        TransactActions ta = new TransactActions();
+        Transactions ta = new Transactions();
         ta.setLocation(250, 100);
 
         //SE OBTIENEN LOS ELEMENTOS
         JTable compsInfo = ta.getCompaniesTable();
         JComboBox compsList = ta.getCompaniesList();
-        JTextField numOfActions = ta.getNumOfActions();
-        JTextField actionsPrice = ta.getActionsPrice();
+        JTextField numOfActions = ta.getStockNumber();
+        JTextField actionsPrice = ta.getStockPrice();
         JButton transact = ta.getTransact();
         DefaultTableModel model2 = new DefaultTableModel();
 
@@ -87,8 +87,8 @@ public class UserClient {
 //                        arr.forEach((el) -> {
 //                            Transaction tr = el;
 //                            String comp1 = el.getCompanyRFC();
-//                            int ops = el.getOperatedActions();
-//                            Double opsPrice = el.getOperatedActionsPrice();
+//                            int ops = el.getOperatedStocks();
+//                            Double opsPrice = el.getOperatedStocksPrice();
 //
 //                            if (arr2.isEmpty()) {
 //                                arr2.add(tr);
@@ -96,12 +96,12 @@ public class UserClient {
 //                                //Se busca en cada elemento de la nueva lista si la empresa ya está listada
 //                                arr2.forEach((el2) -> {
 //                                    String comp2 = el2.getCompanyRFC();
-//                                    int ops2 = el2.getOperatedActions();
-//                                    Double opsPrice2 = el2.getOperatedActionsPrice();
+//                                    int ops2 = el2.getOperatedStocks();
+//                                    Double opsPrice2 = el2.getOperatedStocksPrice();
 //                                    //Si la empresa ya está agregada a la lista, se suma el número de aciones operadas
 //                                    if (comp2.equals(comp1)) {
-//                                        el2.setOperatedActions(ops + ops2);
-//                                        el2.setOperatedActionsPrice((opsPrice + opsPrice2) / 2);
+//                                        el2.setOperatedStocks(ops + ops2);
+//                                        el2.setOperatedStocksPrice((opsPrice + opsPrice2) / 2);
 //                                    } else if (el2 == arr2.get(arr2.size() - 1)) {
 //                                        //Si es el último elemento 
 //                                        arr2.add(tr);
@@ -115,9 +115,9 @@ public class UserClient {
 
                         arr.forEach((n) -> {
                             String rfc = n.getCompanyRFC();
-                            int actions = n.getOperatedActions();
-                            Double price = n.getOperatedActionsPrice();
-                            Double aPrice = n.getActualActionsPrice();
+                            int actions = n.getOperatedStocks();
+                            Double price = n.getOperatedStocksPrice();
+                            Double aPrice = n.getActualStocksPrice();
                             Object[] data = {rfc, actions, price, aPrice};
                             model.addRow(data);
                         });
@@ -169,8 +169,8 @@ public class UserClient {
 
                     arr.forEach((n) -> {
                         String rfc = n.getCompanyRFC();
-                        int actions = n.getNumOfActions();
-                        Double price = n.getValueOfAction();
+                        int actions = n.getStockNumber();
+                        Double price = n.getStockValue();
                         Object[] data = {rfc, actions, price};
                         model2.addRow(data);
                         ls.add(rfc);
@@ -196,7 +196,7 @@ public class UserClient {
                     Double price = Double.parseDouble(actionsPrice.getText());
                     Transaction tr = new Transaction(username, company, acts, price);
                     
-                    //System.out.println("Transaction: " + tr.getCompanyRFC() + " " + tr.getUserRFC() + " " + tr.getOperatedActions() + " " + tr.getOperatedActionsPrice());
+                    //System.out.println("Transaction: " + tr.getCompanyRFC() + " " + tr.getUserRFC() + " " + tr.getOperatedStocks() + " " + tr.getOperatedStocksPrice());
                     int res = re.createInvestment(tr);
                     
                     if (res == 1) {
