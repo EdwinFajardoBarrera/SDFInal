@@ -1,21 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
- */
 package StockExchange;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-//import java.util.*;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
- *
  * @author Edwin Fajardo
  */
-public class Repository {
+public class Repository extends Thread {
+    
+    public static boolean isTimerActive = false; 
+    public static ArrayList<Transaction> buyQueue = new ArrayList<Transaction>();
+    public static ArrayList<Transaction> sellQueue = new ArrayList<Transaction>();
+    public static ArrayList<String> activeCompanies = new ArrayList<String>();
 
+
+    
     public static int createUser(User u) {
         int iRet = -1;
         try {
@@ -43,7 +45,6 @@ public class Repository {
 
         try {
             Connection con = DBManager.getInstance().getConnection();
-            //String SQL = "SELECT userRFC, name FROM users WHERE userRFC = '" + userRFC + "' LIMIT 1";
             String SQL = "SELECT * FROM users WHERE userRFC = ? LIMIT 1";
 
             PreparedStatement pstmt = con.prepareStatement(SQL);
@@ -105,11 +106,86 @@ public class Repository {
         }
         return cList;
     }
+    
+    public static int addInvestmentToQueue(Transaction t){
+        startTimer();
+        if(t.getOperatedStocks()<0){
+            sellQueue.add(t);
+        }
+        else{
+            buyQueue.add(t); 
+        }
+        if(!activeCompanies.contains(t.getCompanyRFC())){
+            activeCompanies.add(t.getCompanyRFC());
+        }
+        return 1;
+    }
+    
+    public static void doInvestments(){
+        ArrayList<Transaction> buyPerCompany;
+        ArrayList<Transaction> sellPerCompany;
+        Transaction lowest;
+        Transaction highest;
+
+        for (int company = 0; company < activeCompanies.size(); company++) {
+            
+            String companyName = activeCompanies.get(company);
+            buyPerCompany = new ArrayList<Transaction>();
+            sellPerCompany = new ArrayList<Transaction>();
+            
+            for(int sell=0; sell < sellQueue.size(); sell++){
+                if(sellQueue.get(sell).getCompanyRFC().equals(companyName)){
+                    sellPerCompany.add(sellQueue.get(sell));
+                }
+            }
+            
+            for(int buy=0; buy < buyQueue.size(); buy++){
+                if(buyQueue.get(buy).getCompanyRFC().equals(companyName)){
+                    buyPerCompany.add(buyQueue.get(buy));
+                }
+            }
+            if(sellQueue.size()>0){
+                lowest = Collections.min(sellQueue);
+                createInvestment(lowest);
+                System.out.println("Venta ganadora para " + lowest.getCompanyRFC() + " : " + lowest.getUserRFC() + " a " + lowest.getOperatedStocksPrice());
+            }
+            if(buyQueue.size()>0){
+                highest = Collections.max(buyQueue);
+                createInvestment(highest);
+                System.out.println("Compra ganadora para " + highest.getCompanyRFC() + " : " + highest.getUserRFC() + " a " + highest.getOperatedStocksPrice());
+
+
+            }
+            buyQueue = new ArrayList<Transaction>();
+            sellQueue = new ArrayList<Transaction>();
+            activeCompanies = new ArrayList<String>();
+        }
+        
+    }
+    
+    public static void startTimer(){
+        if(!isTimerActive){
+            System.out.println("timer creado");
+            isTimerActive=true;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() { 
+                @Override 
+                public void run() { 
+                    doInvestments();
+                    timer.cancel();
+                    isTimerActive=false;
+                    System.out.println("Timer finalizado");
+                }
+            }, 2*60*1000);
+        } 
+    }
 
 //NUEVA TRANSACCIÖN
     public static int createInvestment(Transaction t) {
+
         int iRet = -1;
         try {
+            
             Connection con = DBManager.getInstance().getConnection();
 
             //SE ACTUALIZA EL NUMERO DE ACCIONES DISPONIBLES DE LA COMPANÍA
@@ -173,29 +249,6 @@ public class Repository {
 
         return arr;
     }
-
-//    public static ArrayList findByName(String userRFC) {
-//        ArrayList arr = new ArrayList();
-//
-//        try {
-//            String QRY = "SELECT * FROM users WHERE userRFC = (?)";
-//            Connection con = DBManager.getInstance().getConnection();
-//            PreparedStatement pstmt = con.prepareStatement(QRY);
-//            pstmt.setString(1, "%" + name + "%");
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            while (rs.next()) {
-//                Province p = new Province();
-//                p.setId(rs.getInt("Id"));
-//                p.setShortName(rs.getString("ShortName"));
-//                p.setName(rs.getString("Name"));
-//                arr.add(p);
-//            }
-//
-//            pstmt.close();
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//        }
-//        return arr;
-//    }
+    
+ 
 }

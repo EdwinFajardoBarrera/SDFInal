@@ -24,6 +24,7 @@ public class Server {
       //Register server object
       registry.rebind("User", po);
       System.out.println("¡Servidor de bolsa de valores creado!");
+      
     } catch (Exception e) {
       System.out.println(e);
     }

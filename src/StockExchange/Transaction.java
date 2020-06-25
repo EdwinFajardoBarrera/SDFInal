@@ -12,7 +12,7 @@ import java.sql.Date;
  *
  * @author Edwin Fajardo
  */
-public class Transaction implements Serializable {
+public class Transaction implements Serializable, Comparable<Transaction> {
     private String userRFC;
     private String companyRFC;
     private int operatedStocks;
@@ -28,6 +28,24 @@ public class Transaction implements Serializable {
     
     public Transaction() {}
 
+     @Override
+        public int compareTo(Transaction other) {
+            return compare(this, other);
+        }
+
+
+        public static int compare(Transaction o1, Transaction o2) {
+            if (o1 == o2) {
+                return 0;
+            } else if (o1 == null) {
+                return -1;
+            } else if (o2 == null) {
+                return 1;
+            } else {
+                return Double.compare(o1.getOperatedStocksPrice(), o2.getOperatedStocksPrice());
+            }
+        }
+    
     public String getUserRFC() {
         return userRFC;
     }

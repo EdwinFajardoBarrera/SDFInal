@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package StockExchange;
 
 import java.awt.GraphicsConfiguration;
@@ -24,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
  * @author Edwin Fajardo
  */
 public class Client {
@@ -84,34 +78,6 @@ public class Client {
 
 //                    LISTA TODAS LAS TRANSACCIONES HECHAS POR DETERMINADO USUARIO (userRFC)
                         ArrayList<Transaction> arr = re.getInvestments(usr.getUserRFC());
-                        //ALGORITMO PARA CREAR UN ELEMENTO POR EMPRESA
-//                      ArrayList<Transaction> arr2 = new ArrayList();
-//                        arr.forEach((el) -> {
-//                            Transaction tr = el;
-//                            String comp1 = el.getCompanyRFC();
-//                            int ops = el.getOperatedStocks();
-//                            Double opsPrice = el.getOperatedStocksPrice();
-//
-//                            if (arr2.isEmpty()) {
-//                                arr2.add(tr);
-//                            } else {
-//                                //Se busca en cada elemento de la nueva lista si la empresa ya está listada
-//                                arr2.forEach((el2) -> {
-//                                    String comp2 = el2.getCompanyRFC();
-//                                    int ops2 = el2.getOperatedStocks();
-//                                    Double opsPrice2 = el2.getOperatedStocksPrice();
-//                                    //Si la empresa ya está agregada a la lista, se suma el número de aciones operadas
-//                                    if (comp2.equals(comp1)) {
-//                                        el2.setOperatedStocks(ops + ops2);
-//                                        el2.setOperatedStocksPrice((opsPrice + opsPrice2) / 2);
-//                                    } else if (el2 == arr2.get(arr2.size() - 1)) {
-//                                        //Si es el último elemento 
-//                                        arr2.add(tr);
-//                                    }
-//                                });
-//                            }
-//                        });
-//                        
                         String headers[] = {"Empresa", "Numero de acciones", "Ultimo precio de compra", "Precio actual"};
                         model.setColumnIdentifiers(headers);
 
@@ -134,7 +100,7 @@ public class Client {
                     }
 
 //                    CREAR NUEVO USUARIO (RFC y Nombre)
-//                    User usr = new User("AA12001084", "Hector Burgos");
+//                    User usr = new User("AA12001084", "Daniel Alvarez");
 //                    re.createUser(usr);
 //
 //                    CREAR NUEVA COMPANIA ("RFC", ACCIONES, PRECIO POR ACCION)
@@ -165,9 +131,6 @@ public class Client {
                     model2.setColumnIdentifiers(headers);
                     arr = re.getAllCompanies();
 
-//                    arr.forEach((k) -> {
-//                        System.out.println("Comp: " + k.getCompanyRFC());;
-//                    });
                     arr.forEach((n) -> {
                         String rfc = n.getCompanyRFC();
                         int actions = n.getStockNumber();
@@ -184,8 +147,6 @@ public class Client {
                 } catch (RemoteException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
 
@@ -198,18 +159,14 @@ public class Client {
                     Double price = Double.parseDouble(actionsPrice.getText());
                     Transaction tr = new Transaction(username, company, acts, price);
 
-                    //System.out.println("Transaction: " + tr.getCompanyRFC() + " " + tr.getUserRFC() + " " + tr.getOperatedStocks() + " " + tr.getOperatedStocksPrice());
                     int res = re.createInvestment(tr);
 
                     if (res == 1) {
-                        System.out.println("EXITO EN LA TRANSACCIÓN");
+                        System.out.println("EXITO EN LA TRANSACCIÓN - Su oferta ha sido enviada");
                     } else {
                         System.out.println("ALGO FALLO EN LA TRANSACCIÓN");
                     }
 
-                    //SE CEREA UNA NUEVA TRANSACTION
-                    //PANEL
-                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 } catch (RemoteException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
