@@ -28,10 +28,6 @@ public class VStockList extends javax.swing.JFrame {
     public JButton getTransactions() {
         return transactActions;
     }
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

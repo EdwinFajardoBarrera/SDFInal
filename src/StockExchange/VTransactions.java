@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Edwin Fajardo
+ * @author Edwin Fajardo $ Iván Aguilar
  */
 public class VTransactions extends javax.swing.JFrame {
 
@@ -42,8 +42,6 @@ public class VTransactions extends javax.swing.JFrame {
     public JButton getTransact() {
         return transact;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

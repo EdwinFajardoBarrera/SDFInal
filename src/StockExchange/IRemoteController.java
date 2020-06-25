@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
- * @author Edwin Fajardo
+ * @author Daniel Álvarez
  */
 interface IRemoteController extends Remote {
   public int createUser(User u) throws RemoteException;

@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Edwin Fajardo
+ * @author Kirbey Garcia & Daniel Álvarez
  */
 public class VLogin extends javax.swing.JFrame {
 

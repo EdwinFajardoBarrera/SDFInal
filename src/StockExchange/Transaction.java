@@ -10,7 +10,7 @@ import java.sql.Date;
 
 /**
  *
- * @author Edwin Fajardo
+ * @author Daniel Álvarez
  */
 public class Transaction implements Serializable, Comparable<Transaction> {
     private String userRFC;
@@ -85,16 +85,4 @@ public class Transaction implements Serializable, Comparable<Transaction> {
     public void setActualStocksPrice(Double actualStocksPrice) {
         this.actualStocksPrice = actualStocksPrice;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
 }
