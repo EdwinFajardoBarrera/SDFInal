@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @author Edwin Fajardo
+ * @author Edwin Fajardo & Iván Aguilar
  */
 public class Client {
 

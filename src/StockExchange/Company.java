@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Edwin Fajardo
+ * @author Kirbey Garcia
  */
 public class Company implements Serializable{
     
