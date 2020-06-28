@@ -1,5 +1,8 @@
-package StockExchange;
+package DataBase;
 
+import Server.Company;
+import Server.Transaction;
+import Server.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;

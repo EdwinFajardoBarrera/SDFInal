@@ -1,4 +1,4 @@
-package StockExchange;
+package Server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * @author Daniel Álvarez
  */
-interface IRemoteController extends Remote {
+public interface IRemoteController extends Remote {
   public int createUser(User u) throws RemoteException;
   public User getUser(String userRFC) throws RemoteException;
   public int createCompany(Company c) throws RemoteException;

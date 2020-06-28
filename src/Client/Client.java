@@ -1,5 +1,9 @@
-package StockExchange;
+package Client;
 
+import Server.Company;
+import Server.IRemoteController;
+import Server.Transaction;
+import Server.User;
 import java.awt.GraphicsConfiguration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * @author Edwin Fajardo & Iván Aguilar
  */
-public class Client {
+public class Client{
 
     static GraphicsConfiguration gc;
     static String username;

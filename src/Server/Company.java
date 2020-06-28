@@ -1,4 +1,4 @@
-package StockExchange;
+package Server;
 
 import java.io.Serializable;
 
