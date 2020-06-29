@@ -7,12 +7,11 @@ El objetivo del proyecto consistió en poner en funcionamiento un sistema distri
 
 - **Base de datos**: contiene las tablas *compañías* que corresponde a lista de compañías que cotizan en la casa de bolsa, *usuarios* que contiene la información correspondiente al portafolio de inversiones de cada usuario, y  *transacciones* que contiene el registro de las transacciones realizadas por el operador de la bolsa a solicitud de los usuarios. 
 
-Para ver más detalles del diseño, vea la sección [ESPECIFICACIÓN DE DISEÑO](https://github.com/EdwinFajardoBarrera/SDFInal/blob/master/ESPECIFICACIÓN%20DE%20DISEÑO.zip).
+Para ver más detalles del diseño del sistema, vea la sección [ESPECIFICACIÓN DE DISEÑO](https://github.com/EdwinFajardoBarrera/SDFInal/blob/master/ESPECIFICACIÓN%20DE%20DISEÑO.zip).
 
 ## Instrucciones de uso
 
 ### Instalación
+Es necesario crear una base de datos para el archivo **bolsadevalores.sql**, el cual puede manejarse en un ambiente local mediante un servidor local (como [XAMPP](https://www.apachefriends.org/es/index.html)).
 
-Las tres capas del sistema (cliente, servidor, datos) fueron desarrollados en el lenguaje de programación **Java**. También es necesario crear una base de datos para el archivo **bolsadevalores.sql**, el cual puede manejarse mediante un servidor web (como [XAMPP](https://www.apachefriends.org/es/index.html)).
-
-El programa necesita ser colocado en un IDE (como [NetBeans](https://netbeans.org) o [Eclipse](https://www.eclipse.org/downloads/)). Posterior a ello, se requiere ejecutar el archivo **Server.java** ubicado en el paquete Server, y a continuación, ejecutar el archivo **Client.java**bicado en el paquete Client.
+Las tres capas del sistema (cliente, servidor, datos) fueron desarrollados en el lenguaje de programación **Java**. El programa necesita ser colocado en un IDE (como [NetBeans](https://netbeans.org) o [Eclipse](https://www.eclipse.org/downloads/)). Posterior a ello, se requiere ejecutar el archivo **Server.java** ubicado en el paquete Server, y a continuación, ejecutar el archivo **Client.java** ubicado en el paquete Client.
