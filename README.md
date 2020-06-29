@@ -1,5 +1,5 @@
 # Sistema de Acceso a Servicios Remotos de Persistencia
-El objetivo del proyecto consistió en poner en funcionamiento un sistema distribuido que realice una invocación remota de métodos que incluyan el acceso a una base de datos. Para ello, se realizó un sistema que transacciones bursátiles de compra-venta de acciones en una casa de bolsa de valores. Esta aplicación está organizada en 3 capas:
+El objetivo del proyecto consistió en poner en funcionamiento un sistema distribuido que realice una invocación remota de métodos que incluyan el acceso a una base de datos. Para ello, se desarrolló un sistema que transacciones bursátiles de compra-venta de acciones en una casa de bolsa de valores. Esta aplicación está organizada en 3 capas:
 
 - **Cliente**: esta capa es responsable de solo administrar la interfaz de usuario y se comunica con el servidor para la obtención de los portaforios de inversiones y las llamadas de las funciones de compra-venta de acciones.
 
@@ -15,4 +15,4 @@ Para ver más detalles del diseño, vea la sección [ESPECIFICACIÓN DE DISEÑO]
 
 Las tres capas del sistema (cliente, servidor, datos) fueron desarrollados en el lenguaje de programación **Java**. También es necesario crear una base de datos para el archivo **bolsadevalores.sql**, el cual puede manejarse mediante un servidor web (como [XAMPP](https://www.apachefriends.org/es/index.html)).
 
-El programa necesita ser 
+El programa necesita ser colocado en un IDE (como [NetBeans](https://netbeans.org) o [Eclipse](https://www.eclipse.org/downloads/)). Posterior a ello, se requiere ejecutar el archivo **Server.java** ubicado en el paquete Server, y a continuación, ejecutar el archivo **Client.java**bicado en el paquete Client.
