@@ -4,6 +4,6 @@ Este sistema (cuya abreviación es SASeRPe) es un sistema distruibido que realiz
 
 ## Instrucciones de uso
 
-###Instalación
+### Instalación
 
 Las tres capas del sistema (cliente, servidor, datos) fueron desarrollados en el lenguaje de programación *Java*. También es necesario crear una base de datos para el archivo **bolsadevalores.sql**, el cual puede manejarse mediante un servidor web (como [XAMPP](https://www.apachefriends.org/es/index.html)).
