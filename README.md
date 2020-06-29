@@ -7,7 +7,7 @@ El objetivo del proyecto consistió en poner en funcionamiento un sistema distri
 
 - **Base de datos**: contiene las tablas *compañías* que corresponde a lista de compañías que cotizan en la casa de bolsa, *usuarios* que contiene la información correspondiente al portafolio de inversiones de cada usuario, y  *transacciones* que contiene el registro de las transacciones realizadas por el operador de la bolsa a solicitud de los usuarios. 
 
-Para ver más detalles del diseño, vea la sección [**ESPECIFICACIÓN DE DISEÑO**](https://github.com/EdwinFajardoBarrera/SDFInal/blob/master/ESPECIFICACIÓN%20DE%20DISEÑO.zip)
+Para ver más detalles del diseño, vea la sección [ESPECIFICACIÓN DE DISEÑO](https://github.com/EdwinFajardoBarrera/SDFInal/blob/master/ESPECIFICACIÓN%20DE%20DISEÑO.zip).
 
 ## Instrucciones de uso
 
