@@ -14,3 +14,6 @@ Para ver más detalles del diseño del sistema, vea la sección [ESPECIFICACIÓN
 Es necesario crear una base de datos para el archivo **bolsadevalores.sql**, el cual puede manejarse en un ambiente local mediante un servidor local (como [XAMPP](https://www.apachefriends.org/es/index.html)). La aplicación tiene ya incluída la librería de **MySql Connector**.
 
 Las tres capas del sistema (cliente, servidor, datos) fueron desarrollados en el lenguaje de programación **Java**. El programa necesita ser colocado en un IDE (como [NetBeans](https://netbeans.org) o [Eclipse](https://www.eclipse.org/downloads/)). Posterior a ello, se requiere ejecutar el archivo **Server.java** ubicado en el paquete Server, y a continuación, ejecutar el archivo **Client.java** ubicado en el paquete Client.
+
+##Vídeo presentación
+Este es el link hacia el video explicativo sobre el producto de este proyecto.
